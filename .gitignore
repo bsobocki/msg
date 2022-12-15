@@ -1,0 +1,10 @@
+# ignore directoy bin and files in it
+bin/*
+
+# ignore all files that are building products
+*.o
+*.out
+
+# remove IDE settings
+.idea
+.vscode
