@@ -12,3 +12,6 @@ build:
 
 run:
 	@./bin/$(PROJECT)
+
+clean:
+	@rm -rf bin
