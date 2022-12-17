@@ -1,0 +1,14 @@
+# ignore directoy bin and files in it
+bin/*
+
+# ignore all files that are building products
+*.o
+*.dll
+*.pyc
+*.class
+*.exe
+*.so
+
+# remove IDE settings
+.idea
+.vscode
