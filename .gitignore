@@ -8,3 +8,5 @@ bin/*
 # remove IDE settings
 .idea
 .vscode
+
+.gdb_history
