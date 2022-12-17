@@ -6,6 +6,11 @@ C++ library for interprocess comminication
 
 ## TO DO
 
+### shared memory
+
+- [x] refinement
+- [ ] ShmemManager class implementation
+
 ### critical section
 
 - [ ] iterprocess communication: critical section - refinement
