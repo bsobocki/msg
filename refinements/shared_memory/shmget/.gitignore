@@ -12,3 +12,6 @@ bin/*
 # remove IDE settings
 .idea
 .vscode
+
+reder
+writer
