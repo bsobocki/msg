@@ -8,9 +8,8 @@
 #include <mutex>
 
 // key value for the shared memory
-static const char* mutexFilePath = "critical_section.lock";
+static const char* mutexFilePath = "/tmp/critical_section.lock";
 static const auto mutexSize = sizeof(std::mutex);
-static const auto boolSize = sizeof(bool);
 
 class shm_mutex_t {
 public:

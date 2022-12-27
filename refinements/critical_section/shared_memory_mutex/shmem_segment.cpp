@@ -1,9 +1,15 @@
 #include "shmem_segment.hpp"
+#include <unistd.h>
+#include <fstream>
 
 shmem_segment_t::shmem_segment_t(const char* shmemFilePath , int size, bool* hasBeenInitializedBefore) : shmemSize(size) {
+   if(access(shmemFilePath, F_OK) == -1)
+      std::ofstream file(shmemFilePath);
+   
    auto key = ftok(shmemFilePath, 'R');
    if (key == -1) {
-      perror("shm_mem_t :: ftok");
+      perror("shm_mem_t :: ftok: ");
+      perror(shmemFilePath);
       exit(1);
    }
    
@@ -43,6 +49,10 @@ void shmem_segment_t::setShmemSegment() {
 
 int8_t* shmem_segment_t::getShmemSegment() {
    return mem;
+}
+
+size_t shmem_segment_t::getShmemSize() {
+   return shmemSize;
 }
 
 void shmem_segment_t::clearMem() {

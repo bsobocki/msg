@@ -12,6 +12,7 @@ public:
    shmem_segment_t(const char* shmemFilePath , int size, bool* hasBeenInitializedBefore = nullptr);
    ~shmem_segment_t();
    int8_t* getShmemSegment();
+   size_t getShmemSize();
    void clearMem();
 
 private:

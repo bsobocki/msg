@@ -5,22 +5,19 @@
 
 const size_t shmemSize = sizeof(pid_t) + sizeof(int32_t);
 
-void printData(void* data, size_t size) {
+void increaseData(void* data, size_t size) {
    auto pid = reinterpret_cast<pid_t*>(data);
    auto num = reinterpret_cast<int32_t*>(reinterpret_cast<uint8_t*>(data) + sizeof(pid_t));
-   std::cout << "pid: " << *pid << ", num: " << *num << std::endl;
-}
-
-void initData(void* data, size_t size) {
-   memset(data, 0, size);
+   *pid = getpid();
+   *num += 1;
+   std::cout<<"saved: pid: "<<*pid<<", num: "<<*num<<std::endl;
 }
 
 int main() {
    srand(time(0));
    shmem_t shmem(shmem_t::DEFAULT_FILE_PATH, shmemSize);
-   shmem.useShmem(initData);
    while(true){
-      shmem.useShmem(printData);
+      shmem.useShmem(increaseData);
       usleep(700000 + rand()%1000000);
    }
 }
