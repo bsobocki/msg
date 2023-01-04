@@ -10,21 +10,23 @@ namespace {
 
 }
 
-shmem_segment_t::shmem_segment_t(const char* shmemFilePath , int size) : shmemSize(size) {
-   if(access(shmemFilePath, F_OK) == -1)
-      std::ofstream file(shmemFilePath);
+shmem_segment_t::shmem_segment_t(const char* _shmemKeyFilePath , int size) : shmemSize(size), shmemKeyFilePath(_shmemKeyFilePath) {
+   if(access(shmemKeyFilePath, F_OK) == -1){
+      std::cout << "shmem_segment_t::shmem_segment_t : creating file " << shmemKeyFilePath << std::endl;
+      std::ofstream file(shmemKeyFilePath);
+   }
    
-   auto key = ftok(shmemFilePath, 'R');
+   auto key = ftok(shmemKeyFilePath, 'R');
    if (key == -1) {
       perror("shmmem_segment_t::shmem_segment_t : ftok: ");
-      perror(shmemFilePath);
+      perror(shmemKeyFilePath);
       exit(1);
    }
 
    initializeShmemSegment(key, FULL_SHMEM_SIZE);
 }
 
-shmem_segment_t::shmem_segment_t(key_t key, int size) : shmemSize(size) {
+shmem_segment_t::shmem_segment_t(key_t key, int size) : shmemSize(size), shmemKeyFilePath(nullptr) {
    initializeShmemSegment(key, size);
 }
 
@@ -154,5 +156,9 @@ shmem_segment_t::~shmem_segment_t() {
    if (count <= 0) {
       std::cout << "removing shared memory segment" << std::endl;
       shmctl(shmid, IPC_RMID, 0);
+      if (shmemKeyFilePath) {
+         std::cout << "removing shared memory key file" << std::endl;
+         std::remove(shmemKeyFilePath);
+      }
    }
 }
