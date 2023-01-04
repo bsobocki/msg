@@ -11,15 +11,10 @@ void printData(void* data, size_t size) {
    std::cout << "pid: " << *pid << ", num: " << *num << std::endl;
 }
 
-void initData(void* data, size_t size) {
-   memset(data, 0, size);
-}
-
 int main() {
    srand(time(0));
    shmem_t shmem(shmem_t::DEFAULT_FILE_PATH, shmemSize);
-   shmem.useShmem(initData);
-   while(true){
+   for(int i = 0; i < 35; ++i){
       shmem.useShmem(printData);
       usleep(700000 + rand()%1000000);
    }

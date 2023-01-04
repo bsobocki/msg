@@ -1,7 +1,7 @@
 PROJECT=critical_section
 CC=g++
 INCLUDE=
-SOURCES=shmem.cpp shm_mutex.cpp shmem_segment.cpp
+SOURCES=shmem.cpp shmem_segment.cpp
 LIBS=
 LDFLAGS=-L$(LIBS)
 CFLAGS=-pedantic -Wall -g -O2

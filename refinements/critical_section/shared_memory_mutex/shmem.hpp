@@ -1,6 +1,6 @@
-#include "shm_mutex.hpp"
 #include "shmem_segment.hpp"
 
+typedef uint32_t accessCounter_t;
 
 class shmem_t {
 public:
@@ -9,10 +9,10 @@ public:
    void write(const char* data, size_t size);
    void read(char* data, size_t size);
    void useShmem(void (*transform)(void*, size_t));
+   const accessCounter_t getCounterValue();
 
 private:
    shmem_segment_t shmem;
-   shm_mutex_t mutex;
 
 public:
    static constexpr const char* DEFAULT_FILE_PATH = "/tmp/communication.shmem";

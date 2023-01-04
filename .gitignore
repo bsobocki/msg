@@ -10,3 +10,6 @@ bin/*
 .vscode
 
 .gdb_history
+
+./refinements/*/bin/critical_section
+*/bin/critical_section_srv
