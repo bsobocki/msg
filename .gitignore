@@ -1,5 +1,6 @@
 # ignore directoy bin and files in it
 bin/*
+*/bin/*
 
 # ignore all files that are building products
 *.o
@@ -10,6 +11,3 @@ bin/*
 .vscode
 
 .gdb_history
-
-*/bin/critical_section
-*/bin/critical_section_srv
