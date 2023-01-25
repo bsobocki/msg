@@ -6,6 +6,12 @@ C++ library for interprocess comminication
 
 ## TO DO
 
+### refinements
+
+- [x] is the process alive
+- [x] casting and copying data
+- [x] get typeid
+
 ### shared memory
 
 - [x] refinement
@@ -13,7 +19,7 @@ C++ library for interprocess comminication
 
 ### critical section
 
-- [ ] iterprocess communication: critical section - refinement
+- [x] iterprocess communication: critical section - refinement
 - [ ] make a part in specification for chosen critical section solution
 - [ ] critical section for unrelated processes - implementation of FileManager class
 
