@@ -11,6 +11,10 @@ struct msg_t {
    addr_t to;
    msg_type_t type;
    uint8_t data[SLOT_DATA_SIZE];
+
+   bool isInvalid();
+
+   static const msg_t invalid_msg = {-1, -1, 0xFFFFFFFF, {0}};
 };
 
 std::ostream& operator<<(std::ostream& os, const msg_t& msg);

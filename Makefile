@@ -1,6 +1,6 @@
 PROJECT=msglib
 CC=g++
-INCLUDE=
+INCLUDE= -I src -I src/slotMsgQ
 SOURCES=$(wildcard *.cpp)
 LIBS=
 LDFLAGS=-L$(LIBS)
