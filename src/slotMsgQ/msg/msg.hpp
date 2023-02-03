@@ -1,3 +1,5 @@
+#pragma once
+
 #include <iostream>
 #include <stdint.h>
 
@@ -14,9 +16,8 @@ struct msg_t {
 
    bool isInvalid();
 
-   static const msg_t invalid_msg = {-1, -1, 0xFFFFFFFF, {0}};
+   static const msg_t invalid_msg;
+   static const uint32_t MSG_SLOT_SIZE;
 };
 
 std::ostream& operator<<(std::ostream& os, const msg_t& msg);
-
-static const uint32_t MSG_SLOT_SIZE = sizeof(msg_t);

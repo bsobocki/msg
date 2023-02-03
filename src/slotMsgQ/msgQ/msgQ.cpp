@@ -2,18 +2,19 @@
 
 msgQ_t::msgQ_t(const char* path, size_t _capacity):
    size(0),
-   beg(0),
+   top(0),
    capacity(_capacity),
-   shmem(path, _capacity*MSG_SLOT_SIZE) {
+   shmem(path, _capacity * msg_t::MSG_SLOT_SIZE) {
    msgs = reinterpret_cast<msg_t*>(shmem.getMemory());
 }
 
 void msgQ_t::push(const msg_t & msg) {
    if (size < capacity) {
-      size_t ind = top + size;
-      if (ind >= capacity) ind -= capacity;
-      memcpy(msgs + ind, &msg, MSG_SLOT_SIZE);
-      ++size;
+      size_t firstFreeInd = top + size;
+      if (firstFreeInd >= capacity)
+         firstFreeInd -= capacity;
+      memcpy(msgs + firstFreeInd, &msg, msg_t::MSG_SLOT_SIZE);
+      size++;
    }
    else
       std::cout << "msgQ is full! Cannot push message:" << msg << std::endl;
@@ -21,13 +22,28 @@ void msgQ_t::push(const msg_t & msg) {
 
 const msg_t msgQ_t::pop() {
    if (not empty()) {
-      msg_t msg = msgs[top++];
-      if (top == capacity) top = 0;
+      msg_t msg = msgs[top];
+      moveTop();
       --size;
       return msg;
    }
    else {
       std::cout << "msgQ is empty! Cannot pop message!" << std::endl;
+      return msg_t::invalid_msg;
+   }
+}
+
+void msgQ_t::moveTop() {
+   top++;
+   if (top == capacity) top = 0;
+}
+
+const msg_t msgQ_t::peek() {
+   if (not empty()) {
+      return msgs[top];
+   }
+   else {
+      std::cout << "msgQ is empty! Cannot peek message!" << std::endl;
       return msg_t::invalid_msg;
    }
 }
