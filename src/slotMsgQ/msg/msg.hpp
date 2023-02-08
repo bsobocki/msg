@@ -18,6 +18,8 @@ struct msg_t {
 
    static const msg_t invalid_msg;
    static const uint32_t MSG_SLOT_SIZE;
+
+   bool operator==(const msg_t& rhs) const;
 };
 
 std::ostream& operator<<(std::ostream& os, const msg_t& msg);

@@ -13,3 +13,10 @@ bool msg_t::isInvalid() {
          or to == -1
          or type == 0xFFFFFFFF;
 }
+
+bool msg_t::operator==(const msg_t& rhs) const {
+   return from == rhs.from
+         and to == rhs.to
+         and type == rhs.type
+         and std::equal(data, data + SLOT_DATA_SIZE, rhs.data);
+}

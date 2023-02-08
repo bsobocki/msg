@@ -20,6 +20,10 @@ void msgQ_t::push(const msg_t & msg) {
       std::cout << "msgQ is full! Cannot push message:" << msg << std::endl;
 }
 
+void msgQ_t::push(const msg_t && msg){
+   push(msg);
+}
+
 const msg_t msgQ_t::pop() {
    if (not empty()) {
       msg_t msg = msgs[top];

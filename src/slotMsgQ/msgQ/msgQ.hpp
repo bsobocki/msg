@@ -2,14 +2,16 @@
 
 #include <iostream>
 #include <stdint.h>
-#include <shared_memory/shmem_segment.hpp>
+#include <shmem_segment.hpp>
 #include <msg/msg.hpp>
+#include <mutex>
 
 struct msgQ_t {
 public:
    msgQ_t(const char* path, size_t _capacity);
 
    void push(const msg_t & msg);
+   void push(const msg_t && msg);
    const msg_t pop();
    const msg_t peek();
    bool empty();
