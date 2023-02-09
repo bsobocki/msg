@@ -5,6 +5,7 @@ CFLAGS=-pedantic -Wall -g -O2
 GTEST_FLAGS=-lgtest -lgtest_main -lpthread
 
 INCLUDE=-I src
+INCLUDE_SHMEM=-I src/shared_memory
 INCLUDE_SLOT_MSGQ=-I src/slotMsgQ
 
 SHMEM_SRC=$(wildcard src/shared_memory/*.cpp)
@@ -13,7 +14,7 @@ SLOT_MSGQ_SRC=$(wildcard src/slotMsgQ/*/*.cpp)
 
 build_project:
 	@if [ ! -d bin ]; then mkdir bin; fi
-	@$(CC) $(CFLAGS) $(INCLUDE) $(SHMEM_SRC) -o bin/$(PROJECT)
+	@$(CC) $(CFLAGS) $(INCLUDE) $(INCLUDE_SHMEM) $(SHMEM_SRC) -o bin/$(PROJECT)
 
 
 UT_SRC=$(wildcard test/ut/*/*.cpp)
