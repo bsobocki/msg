@@ -1,5 +1,13 @@
 #include <msgQ/msgQ.hpp>
 
+msgQ_t::msgQ_t(shmem_segment_t& _shmem, size_t _capacity):
+   size(0),
+   top(0),
+   capacity(_capacity),
+   shmem(_shmem) {
+   msgs = reinterpret_cast<msg_t*>(shmem.getMemory());
+}
+
 msgQ_t::msgQ_t(const char* path, size_t _capacity):
    size(0),
    top(0),

@@ -9,6 +9,7 @@
 struct msgQ_t {
 public:
    msgQ_t(const char* path, size_t _capacity);
+   msgQ_t(shmem_segment_t& _shmem, size_t _capacity);
 
    void push(const msg_t & msg);
    void push(const msg_t && msg);

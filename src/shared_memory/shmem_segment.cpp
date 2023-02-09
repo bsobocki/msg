@@ -49,10 +49,6 @@ void shmem_segment_t::initializeShmemSegment(key_t key, int size) {
 }
 
 void shmem_segment_t::setShmid(key_t key) {
-
-   
-
-
    if ((this->shmid = shmget(key, FULL_SHMEM_SIZE, IPC_CREAT | IPC_EXCL | 0666)) failed) {
       std::cout<<"shmem_segment_t::setShmid : shmget with IPC_EXCL failed."<<std::endl;
 
@@ -230,16 +226,20 @@ void shmem_segment_t::unlock() {
    mutex->unlock();
 }
 
-int8_t* shmem_segment_t::getMemory() {
+int8_t* shmem_segment_t::getMemory() const {
    return memory;
 }
 
-size_t shmem_segment_t::getMemorySize() {
+size_t shmem_segment_t::getMemorySize() const {
    return shmemSize;
 }
 
-const accessCounter_t shmem_segment_t::getCounterValue() {
+const accessCounter_t shmem_segment_t::getCounterValue() const {
    return *counter;
+}
+
+const char* shmem_segment_t::getShmemKeyFilePath() const {
+   return shmemKeyFilePath;
 }
 
 shmem_segment_t::~shmem_segment_t() {
