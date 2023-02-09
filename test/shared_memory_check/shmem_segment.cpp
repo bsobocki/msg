@@ -18,6 +18,17 @@ shmem_segment_t::shmem_segment_t(int size) : shmemSize(size), shmemKeyFilePath(n
    initializeShmemSegment();
 }
 
+shmem_segment_t::shmem_segment_t(const shmem_segment_t& rhs){
+   std::cout<< "cpopied shmem_segment_t"<<std::endl;
+   memory = rhs.getMemory();
+   shmem = memory - sizeof(std::mutex) - sizeof(accessCounter_t);
+   mutex = reinterpret_cast<std::mutex*>(memory - sizeof(std::mutex));
+   counter = reinterpret_cast<accessCounter_t*>(shmem);
+   shmemSize = rhs.getMemorySize();
+   shmemKeyFilePath = rhs.getShmemKeyFilePath();
+   increaseCounter();
+}
+
 void shmem_segment_t::initializeShmemSegment() {
    shmem = new int8_t [FULL_SHMEM_SIZE];
    counter = (accessCounter_t*) shmem;
@@ -70,16 +81,20 @@ void shmem_segment_t::unlock() {
    mutex->unlock();
 }
 
-int8_t* shmem_segment_t::getMemory() {
+int8_t* shmem_segment_t::getMemory() const {
    return memory;
 }
 
-size_t shmem_segment_t::getMemorySize() {
+size_t shmem_segment_t::getMemorySize() const {
    return shmemSize;
 }
 
-const accessCounter_t shmem_segment_t::getCounterValue() {
+const accessCounter_t shmem_segment_t::getCounterValue() const {
    return *counter;
+}
+
+const char* shmem_segment_t::getShmemKeyFilePath() const {
+   return shmemKeyFilePath;
 }
 
 shmem_segment_t::~shmem_segment_t() {
