@@ -10,8 +10,8 @@ typedef uint32_t accessCounter_t;
 
 class shmem_segment_t {
 public:
-   shmem_segment_t(key_t key, int size);
-   shmem_segment_t(const char* _shmemKeyFilePath , int size);
+   shmem_segment_t(key_t key, size_t size);
+   shmem_segment_t(const char* _shmemKeyFilePath , size_t size);
    ~shmem_segment_t();
 
    int8_t* getMemory() const;

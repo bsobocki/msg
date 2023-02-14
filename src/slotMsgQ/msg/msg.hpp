@@ -23,3 +23,4 @@ struct msg_t {
 };
 
 std::ostream& operator<<(std::ostream& os, const msg_t& msg);
+const std::string msgToStr(const msg_t& msg);

@@ -1,4 +1,5 @@
 #include <msgQ/msgQ.hpp>
+#include <MsgQErrNoMoreSlotsForMsg.hpp>
 
 msgQ_t::msgQ_t(shmem_segment_t& _shmem, size_t _capacity):
    size(0),
@@ -18,14 +19,14 @@ msgQ_t::msgQ_t(const char* path, size_t _capacity):
 
 void msgQ_t::push(const msg_t & msg) {
    if (size < capacity) {
-      size_t firstFreeInd = top + size;
-      if (firstFreeInd >= capacity)
-         firstFreeInd -= capacity;
-      memcpy(msgs + firstFreeInd, &msg, msg_t::MSG_SLOT_SIZE);
+      size_t firstFreeIndex = top + size;
+      if (firstFreeIndex >= capacity)
+         firstFreeIndex -= capacity;
+      memcpy(msgs + firstFreeIndex, &msg, msg_t::MSG_SLOT_SIZE);
       size++;
    }
    else
-      std::cout << "msgQ is full! Cannot push message:" << msg << std::endl;
+      throw MsgQErrNoMoreSlotsForMsg(msgToStr(msg));
 }
 
 void msgQ_t::push(const msg_t && msg){
@@ -51,9 +52,8 @@ void msgQ_t::moveTop() {
 }
 
 const msg_t msgQ_t::peek() {
-   if (not empty()) {
+   if (not empty())
       return msgs[top];
-   }
    else {
       std::cout << "msgQ is empty! Cannot peek message!" << std::endl;
       return msg_t::invalid_msg;

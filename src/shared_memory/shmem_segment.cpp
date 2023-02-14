@@ -2,6 +2,7 @@
 #include <unistd.h>
 #include <string.h>
 #include <fstream>
+#include <ShmemErrInvalidShmemSize.hpp>
 
 namespace {
 
@@ -10,7 +11,7 @@ namespace {
 
 }
 
-shmem_segment_t::shmem_segment_t(const char* _shmemKeyFilePath , int size) : shmemSize(size), shmemKeyFilePath(_shmemKeyFilePath) {
+shmem_segment_t::shmem_segment_t(const char* _shmemKeyFilePath , size_t size) : shmemSize(size), shmemKeyFilePath(_shmemKeyFilePath) {
    if(access(shmemKeyFilePath, F_OK) == -1){
       std::cout << "shmem_segment_t::shmem_segment_t : creating file " << shmemKeyFilePath << std::endl;
       std::ofstream file(shmemKeyFilePath);
@@ -26,11 +27,14 @@ shmem_segment_t::shmem_segment_t(const char* _shmemKeyFilePath , int size) : shm
    initializeShmemSegment(key, FULL_SHMEM_SIZE);
 }
 
-shmem_segment_t::shmem_segment_t(key_t key, int size) : shmemSize(size), shmemKeyFilePath(nullptr) {
+shmem_segment_t::shmem_segment_t(key_t key, size_t size) : shmemSize(size), shmemKeyFilePath(nullptr) {
    initializeShmemSegment(key, size);
 }
 
 void shmem_segment_t::initializeShmemSegment(key_t key, int size) {
+   if (not size)
+      throw ShmemErrInvalidShmemSize();
+
    setShmid(key);
    attachShmemSegment();
    attachMutex();

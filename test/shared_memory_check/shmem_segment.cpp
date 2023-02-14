@@ -2,6 +2,7 @@
 #include <unistd.h>
 #include <string.h>
 #include <fstream>
+#include <ShmemErrInvalidShmemSize.hpp>
 
 namespace {
 
@@ -10,7 +11,7 @@ namespace {
 
 }
 
-shmem_segment_t::shmem_segment_t(const char* _shmemKeyFilePath , int size) : shmemSize(size), shmemKeyFilePath(_shmemKeyFilePath) {
+shmem_segment_t::shmem_segment_t(const char* _shmemKeyFilePath , size_t size) : shmemSize(size), shmemKeyFilePath(_shmemKeyFilePath) {
    initializeShmemSegment();
 }
 
@@ -30,6 +31,9 @@ shmem_segment_t::shmem_segment_t(const shmem_segment_t& rhs){
 }
 
 void shmem_segment_t::initializeShmemSegment() {
+   if (not shmemSize)
+      throw ShmemErrInvalidShmemSize();
+
    shmem = new int8_t [FULL_SHMEM_SIZE];
    counter = (accessCounter_t*) shmem;
    mutex = (std::mutex*) (shmem + sizeof(accessCounter_t));
