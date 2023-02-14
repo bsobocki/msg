@@ -19,7 +19,7 @@ shmem_segment_t::shmem_segment_t(int size) : shmemSize(size), shmemKeyFilePath(n
 }
 
 shmem_segment_t::shmem_segment_t(const shmem_segment_t& rhs){
-   std::cout<< "cpopied shmem_segment_t"<<std::endl;
+   std::cout<< "copied shmem_segment_t"<<std::endl;
    memory = rhs.getMemory();
    shmem = memory - sizeof(std::mutex) - sizeof(accessCounter_t);
    mutex = reinterpret_cast<std::mutex*>(memory - sizeof(std::mutex));
@@ -35,6 +35,7 @@ void shmem_segment_t::initializeShmemSegment() {
    mutex = (std::mutex*) (shmem + sizeof(accessCounter_t));
    memory = (int8_t*) (shmem + sizeof(accessCounter_t) + sizeof(std::mutex));
    initializeMutex();
+   initializeCounter();
    increaseCounter();
    clearMemory();
 }
@@ -45,8 +46,8 @@ void shmem_segment_t::initializeMutex() {
 
 void shmem_segment_t::initializeCounter() {
    mutex->lock();
-   std::cout << "clearing counter" << std::endl;
    *counter = 0;
+   std::cout << "clearing counter to the value " << *counter << std::endl;
    mutex->unlock();
 }
 
